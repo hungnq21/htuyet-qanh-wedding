@@ -8497,6 +8497,75 @@
           console.log('Modal đã đóng');
         });
       });
+
+      function handleGuestFromLocalStorage() {
+        const guestBase64 = localStorage.getItem("guest");
+        if (!guestBase64) return;
+
+        // Giải mã base64 → text
+        let guestText;
+        try {
+          guestText = decodeURIComponent(escape(window.atob(guestBase64)));
+        } catch (e) {
+          guestText = window.atob(guestBase64);
+        }
+
+        // Thay đổi CSS div đầu
+        const firstDiv = document.getElementById("w-hoyb400n");
+        if (firstDiv) {
+          firstDiv.style.top = "574.4999961853027px";
+        }
+
+        // Thay đổi CSS div thứ hai
+        const secondDiv = document.getElementById("w-3subauj7");
+        if (secondDiv) {
+          secondDiv.style.top = "205px";
+        }
+
+        // Chèn thẻ H2 vào trong #w-hoyb400n .text-block
+        const textBlock = document.querySelector("#w-hoyb400n .text-block");
+        if (textBlock) {
+          const h2 = document.createElement("h2");
+          h2.id = "guest-invite";
+          h2.className = "text-block-css full-width";
+          h2.style.position = "absolute";
+          h2.style.top = "-305px";
+          h2.style.left = "0";
+          h2.style.fontFamily = '"Ephesis-Regular.ttf", sans-serif';
+          h2.style.fontSize = "27px";
+          h2.style.fontWeight = "300";
+          h2.textContent = guestText;
+
+
+          // 🔥 Animation 
+          h2.style.animationName = "fadeInUp";
+          h2.style.webkitAnimationName = "fadeInUp";
+          h2.style.animationDelay = "0s";
+          h2.style.webkitAnimationDelay = "0s";
+          h2.style.animationIterationCount = "1";
+          h2.style.webkitAnimationIterationCount = "1";
+          h2.style.animationDuration = "2s";
+          h2.style.webkitAnimationDuration = "2s";
+          textBlock.appendChild(h2);
+        }
+      }
+
+      // Gọi hàm khi trang load
+      window.addEventListener("DOMContentLoaded", handleGuestFromLocalStorage);
+
+      function hideGuestInviteOnClick() {
+        const btn = document.getElementById("w-3subauj7");
+        const guestEl = document.getElementById("guest-invite");
+
+        if (!btn || !guestEl) return;
+
+        btn.addEventListener("click", () => {
+          guestEl.style.display = "none";
+        });
+      }
+
+      // Gọi sau khi DOM đã load
+      window.addEventListener("DOMContentLoaded", hideGuestInviteOnClick);
     </script>
     <script>
       !(function () {
