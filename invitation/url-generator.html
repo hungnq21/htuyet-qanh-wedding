@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Base64 Link Generator với Notification</title>
+
+  <!-- Thêm CSS Toastify từ CDN -->
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+  />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f9f9f9;
+    }
+    .container {
+      max-width: 600px;
+      width: 90%;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0 10px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #ff5a5f;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e04848;
+    }
+    .link-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .output {
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 4px;
+      word-break: break-all;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Base64 Link Generator</h2>
+
+    <label for="message">Nhập message:</label>
+    <textarea id="message" rows="3" placeholder="Nhập text ở đây..."></textarea>
+
+    <button onclick="generateLink()">Tạo link</button>
+
+    <h3>Link hoàn chỉnh:</h3>
+    <div class="link-row">
+      <div class="output" id="outputLink">
+        https://htuyet-qanh-wedding.site?guest=
+      </div>
+      <button onclick="copyLink()">Copy link</button>
+    </div>
+  </div>
+
+  <!-- Thêm JS Toastify từ CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script>
+    function generateLink() {
+      const msg = document.getElementById('message').value;
+      if (!msg) {
+        Toastify({
+          text: "Vui lòng nhập message!",
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "center",
+          backgroundColor: "linear-gradient(to right, #FF5A5F, #E04848)"
+        }).showToast();
+        return;
+      }
+
+      // Encode sang Base64
+      const base64Msg = btoa(unescape(encodeURIComponent(msg)));
+      const fullLink = `https://htuyet-qanh-wedding.site?guest=${base64Msg}`;
+      document.getElementById('outputLink').textContent = fullLink;
+
+      Toastify({
+        text: "Tạo link thành công!",
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "center",
+        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)"
+      }).showToast();
+    }
+
+    function copyLink() {
+      const linkEl = document.getElementById('outputLink');
+      const range = document.createRange();
+      range.selectNodeContents(linkEl);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+
+      let success = false;
+      try {
+        success = document.execCommand('copy');
+      } catch (err) {
+        success = false;
+      }
+
+      sel.removeAllRanges();
+
+      if (success) {
+        Toastify({
+          text: "Link đã được copy!",
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "center",
+          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)"
+        }).showToast();
+      } else {
+        Toastify({
+          text: "Copy thất bại, vui lòng copy thủ công.",
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "center",
+          backgroundColor: "linear-gradient(to right, #FF5A5F, #E04848)"
+        }).showToast();
+      }
+    }
+  </script>
+
+</body>
+</html>

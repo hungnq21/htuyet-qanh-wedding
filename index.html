@@ -80,7 +80,6 @@ h4 { margin: 0;  font-weight: bold;  font-size: 1.18em; }
 .tblNoBorder td   { border: 0; }
 
 
-// -->
 </style>
 
 </head>
@@ -144,6 +143,17 @@ h4 { margin: 0;  font-weight: bold;  font-size: 1.18em; }
 	</tr>
 </table>
 
+<script>
+	window.onload = saveGuestToLocalStorage;
+	function saveGuestToLocalStorage() {
+		const urlParams = new URLSearchParams(window.location.search);
+		const guest = urlParams.get("guest");
+
+		if (guest) {
+			localStorage.setItem("guest", guest);
+		}
+	}
+</script>
 </body>
 
 </html>
